@@ -4,15 +4,20 @@ import CountdownTimer from "./components/CountdownTimer"
 import { useEffect, useState } from "react"
 
 const words = faker.word.words(10)
+let timer: number
 
 function App() {
-  const [timeLeft, setTimeLeft] = useState(30)
+  const [timeLeft, setTimeLeft] = useState(5)
   const [isCountDownStart, setIsCountDownStart] = useState(false)
 
-  function countDown() {
-    setInterval(() => {
+  function startCountDown() {
+    timer = setInterval(() => {
       setTimeLeft((p) => p - 1)
     }, 1000)
+  }
+
+  if (timeLeft == 0) {
+    clearInterval(timer)
   }
 
   useEffect(() => {
@@ -25,7 +30,7 @@ function App() {
 
   function PopKeyUp(e: KeyboardEvent) {
     if (!isCountDownStart) {
-      countDown()
+      startCountDown()
       setIsCountDownStart(true)
     } else {
       console.log(e.code)
