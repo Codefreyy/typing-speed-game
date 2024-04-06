@@ -4,15 +4,19 @@ import CountdownTimer from "./components/CountdownTimer"
 import { useEffect, useState } from "react"
 import DisplayResult from "./components/DisplayResult"
 
-const wordsTobeUsed = faker.word.words(10)
 let timer: number
 const countDownSeconds = 10
 
 function App() {
   const [timeLeft, setTimeLeft] = useState(countDownSeconds)
   const [isCountDownStart, setIsCountDownStart] = useState(false)
-  const [words, setWords] = useState(wordsTobeUsed)
+  const [words, setWords] = useState("")
+  const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [resultIndexArr, setResultIndexArr] = useState<boolean[]>([])
+
+  useEffect(() => {
+    setWords(faker.word.words(10)) // initialize word list
+  }, [])
 
   function startCountDown() {
     setIsCountDownStart(true)
@@ -29,11 +33,11 @@ function App() {
   }, [isCountDownStart, timeLeft, resultIndexArr])
 
   useEffect(() => {
-    document.addEventListener("keypress", PopKeyUp, false)
+    document.addEventListener("keyup", PopKeyUp, false)
 
     return () => {
       console.log("stof listenr")
-      document.removeEventListener("keypress", PopKeyUp, false)
+      document.removeEventListener("keyup", PopKeyUp, false)
     }
   })
 
@@ -48,9 +52,9 @@ function App() {
   }
 
   function checkCorrect(char: string) {
-    const shiftFirstChar = Array.from(words).shift()
-    setWords((words) => words.slice(1))
-    if (shiftFirstChar == char || (char == "ce" && shiftFirstChar == " ")) {
+    const currentChar = words[currentWordIndex]
+    setCurrentWordIndex((prev) => prev + 1)
+    if (currentChar == char || (char == "ce" && currentChar == " ")) {
       setResultIndexArr([...resultIndexArr, true])
     } else {
       setResultIndexArr([...resultIndexArr, false])
@@ -59,11 +63,11 @@ function App() {
   return (
     <>
       <CountdownTimer timeLeft={timeLeft} />
-      <WordComponent words={wordsTobeUsed} wordStatus={resultIndexArr} />
+      <WordComponent words={words} wordStatus={resultIndexArr} />
       <DisplayResult
         resultArr={resultIndexArr}
         inCountDownEnd={!isCountDownStart}
-        originalWords={wordsTobeUsed}
+        originalWords={words}
       />
     </>
   )
