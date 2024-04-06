@@ -6,6 +6,10 @@ import DisplayResult from "./components/DisplayResult"
 
 const countDownSeconds = 10
 
+// fix: the first type character was not compared
+// todo: when all words are typed, change a new one
+// todo: add a button to restart the game
+
 function App() {
   const [timeLeft, setTimeLeft] = useState(countDownSeconds)
   const [isCountDownStart, setIsCountDownStart] = useState(false)
@@ -19,13 +23,14 @@ function App() {
 
   const checkCorrect = useCallback(
     (char: string) => {
+      console.log("char", char)
       const currentChar = words[currentWordIndex]
-      setCurrentWordIndex((prev) => prev + 1)
       if (currentChar == char || (char == "ce" && currentChar == " ")) {
         setResultIndexArr([...resultIndexArr, true])
       } else {
         setResultIndexArr([...resultIndexArr, false])
       }
+      setCurrentWordIndex((prev) => prev + 1)
     },
     [words, currentWordIndex, resultIndexArr]
   )
@@ -34,10 +39,9 @@ function App() {
     (e: KeyboardEvent) => {
       if (!isCountDownStart) {
         startCountDown()
-      } else if (isCountDownStart) {
-        const typedCharacter = e.code.toLocaleLowerCase().slice(3)
-        checkCorrect(typedCharacter)
       }
+      const typedCharacter = e.code.toLocaleLowerCase().slice(3)
+      checkCorrect(typedCharacter)
     },
     [isCountDownStart, checkCorrect]
   )
