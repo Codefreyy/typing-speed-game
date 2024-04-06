@@ -7,7 +7,6 @@ interface displayResult {
 export default function DisplayResult({
   resultArr,
   inCountDownEnd,
-  originalWords,
 }: displayResult) {
   if (resultArr.length !== 0 && inCountDownEnd) {
     let correctWordCount = 0
@@ -19,7 +18,7 @@ export default function DisplayResult({
         errorWordCount += 1
       }
     })
-    const correctRate = (correctWordCount / originalWords.length) * 100
+    const correctRate = (correctWordCount / resultArr.length) * 100
     return (
       <div className="grid place-items-center ">
         <span className="text-primary-500 font-bold">Results</span>

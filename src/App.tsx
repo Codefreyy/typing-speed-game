@@ -9,6 +9,7 @@ const countDownSeconds = 10
 // fix: the first type character was not compared
 // todo: when all words are typed, change a new one
 // todo: add a button to restart the game
+// todo: result animation
 
 function App() {
   const [timeLeft, setTimeLeft] = useState(countDownSeconds)
