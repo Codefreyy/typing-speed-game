@@ -6,7 +6,7 @@ export default function WordComponent({
   wordStatus: boolean[]
 }) {
   return (
-    <div className="text-4xl text-center text-slate-500">
+    <div className="text-4xl text-center text-slate-500 p-4">
       {words.split("").map((char, index) => {
         let styleClass
         if (wordStatus[index] === true) {

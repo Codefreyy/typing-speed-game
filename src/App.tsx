@@ -2,12 +2,14 @@ import { faker } from "@faker-js/faker"
 import WordComponent from "./components/GenerateWords"
 import CountdownTimer from "./components/CountdownTimer"
 import { useEffect, useState } from "react"
+import DisplayResult from "./components/DisplayResult"
 
 const wordsTobeUsed = faker.word.words(10)
 let timer: number
+const countDownSeconds = 10
 
 function App() {
-  const [timeLeft, setTimeLeft] = useState(30)
+  const [timeLeft, setTimeLeft] = useState(countDownSeconds)
   const [isCountDownStart, setIsCountDownStart] = useState(false)
   const [words, setWords] = useState(wordsTobeUsed)
   const [resultIndexArr, setResultIndexArr] = useState<boolean[]>([])
@@ -23,11 +25,6 @@ function App() {
     if (timeLeft == 0) {
       clearInterval(timer)
       setIsCountDownStart(false)
-      calculateResults()
-    }
-
-    function calculateResults() {
-      console.log(resultIndexArr)
     }
   }, [isCountDownStart, timeLeft, resultIndexArr])
 
@@ -35,6 +32,7 @@ function App() {
     document.addEventListener("keypress", PopKeyUp, false)
 
     return () => {
+      console.log("stof listenr")
       document.removeEventListener("keypress", PopKeyUp, false)
     }
   })
@@ -50,10 +48,8 @@ function App() {
   }
 
   function checkCorrect(char: string) {
-    console.log({ char })
     const shiftFirstChar = Array.from(words).shift()
     setWords((words) => words.slice(1))
-    console.log(shiftFirstChar, char)
     if (shiftFirstChar == char || (char == "ce" && shiftFirstChar == " ")) {
       setResultIndexArr([...resultIndexArr, true])
     } else {
@@ -62,8 +58,13 @@ function App() {
   }
   return (
     <>
-      <WordComponent words={wordsTobeUsed} wordStatus={resultIndexArr} />
       <CountdownTimer timeLeft={timeLeft} />
+      <WordComponent words={wordsTobeUsed} wordStatus={resultIndexArr} />
+      <DisplayResult
+        resultArr={resultIndexArr}
+        inCountDownEnd={!isCountDownStart}
+        originalWords={wordsTobeUsed}
+      />
     </>
   )
 }
