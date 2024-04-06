@@ -10,6 +10,7 @@ function App() {
   const [timeLeft, setTimeLeft] = useState(30)
   const [isCountDownStart, setIsCountDownStart] = useState(false)
   const [words, setWords] = useState(wordsTobeUsed)
+  const [resultIndexArr, setResultIndexArr] = useState<boolean[]>([])
 
   function startCountDown() {
     setIsCountDownStart(true)
@@ -24,9 +25,11 @@ function App() {
       setIsCountDownStart(false)
       calculateResults()
     }
-  }, [isCountDownStart, timeLeft])
 
-  function calculateResults() {}
+    function calculateResults() {
+      console.log(resultIndexArr)
+    }
+  }, [isCountDownStart, timeLeft, resultIndexArr])
 
   useEffect(() => {
     document.addEventListener("keypress", PopKeyUp, false)
@@ -52,12 +55,14 @@ function App() {
     setWords((words) => words.slice(1))
     console.log(shiftFirstChar, char)
     if (shiftFirstChar == char || (char == "ce" && shiftFirstChar == " ")) {
-      console.log("correct")
+      setResultIndexArr([...resultIndexArr, true])
+    } else {
+      setResultIndexArr([...resultIndexArr, false])
     }
   }
   return (
     <>
-      <WordComponent words={wordsTobeUsed} />
+      <WordComponent words={wordsTobeUsed} wordStatus={resultIndexArr} />
       <CountdownTimer timeLeft={timeLeft} />
     </>
   )

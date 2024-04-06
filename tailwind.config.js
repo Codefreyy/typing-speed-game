@@ -8,6 +8,7 @@ export default {
     extend: {
       colors: {
         primary: colors.yellow,
+        error: colors.red,
       },
     },
   },
