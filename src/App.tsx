@@ -3,12 +3,13 @@ import WordComponent from "./components/GenerateWords"
 import CountdownTimer from "./components/CountdownTimer"
 import { useEffect, useState } from "react"
 
-const words = faker.word.words(10)
+const wordsTobeUsed = faker.word.words(10)
 let timer: number
 
 function App() {
-  const [timeLeft, setTimeLeft] = useState(5)
+  const [timeLeft, setTimeLeft] = useState(30)
   const [isCountDownStart, setIsCountDownStart] = useState(false)
+  const [words, setWords] = useState(wordsTobeUsed)
 
   function startCountDown() {
     setIsCountDownStart(true)
@@ -40,12 +41,23 @@ function App() {
       startCountDown()
     } else if (isCountDownStart) {
       const typedCharacter = e.code.toLocaleLowerCase().slice(3)
-      console.log(typedCharacter)
+      // console.log(Array.from(words))
+      checkCorrect(typedCharacter)
+    }
+  }
+
+  function checkCorrect(char: string) {
+    console.log({ char })
+    const shiftFirstChar = Array.from(words).shift()
+    setWords((words) => words.slice(1))
+    console.log(shiftFirstChar, char)
+    if (shiftFirstChar == char || (char == "ce" && shiftFirstChar == " ")) {
+      console.log("correct")
     }
   }
   return (
     <>
-      <WordComponent words={words} />
+      <WordComponent words={wordsTobeUsed} />
       <CountdownTimer timeLeft={timeLeft} />
     </>
   )
