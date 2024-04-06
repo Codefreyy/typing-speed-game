@@ -11,29 +11,36 @@ function App() {
   const [isCountDownStart, setIsCountDownStart] = useState(false)
 
   function startCountDown() {
+    setIsCountDownStart(true)
     timer = setInterval(() => {
       setTimeLeft((p) => p - 1)
     }, 1000)
   }
 
-  if (timeLeft == 0) {
-    clearInterval(timer)
-  }
+  useEffect(() => {
+    if (timeLeft == 0) {
+      clearInterval(timer)
+      setIsCountDownStart(false)
+      calculateResults()
+    }
+  }, [isCountDownStart, timeLeft])
+
+  function calculateResults() {}
 
   useEffect(() => {
-    document.addEventListener("keyup", PopKeyUp, false)
+    document.addEventListener("keypress", PopKeyUp, false)
 
     return () => {
-      document.removeEventListener("keyup", PopKeyUp, false)
+      document.removeEventListener("keypress", PopKeyUp, false)
     }
   })
 
   function PopKeyUp(e: KeyboardEvent) {
     if (!isCountDownStart) {
       startCountDown()
-      setIsCountDownStart(true)
-    } else {
-      console.log(e.code)
+    } else if (isCountDownStart) {
+      const typedCharacter = e.code.toLocaleLowerCase().slice(3)
+      console.log(typedCharacter)
     }
   }
   return (
