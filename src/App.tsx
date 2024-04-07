@@ -6,7 +6,7 @@ import GenerateWords from "./components/GenerateWords"
 
 const countDownSeconds = 30
 
-// todo: when all words are typed, change a new one
+// time: time does not start right away
 // todo: add a button to restart the game
 // todo: result animation
 
@@ -109,6 +109,7 @@ function App() {
         resultArr={resultIndexArr}
         isCountDownEnd={!isCountDownStart}
         originalWords={words}
+        totalTime={countDownSeconds}
       />
     </>
   )
