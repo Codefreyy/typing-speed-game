@@ -1,12 +1,11 @@
 import { faker } from "@faker-js/faker"
-import WordComponent from "./components/GenerateWords"
 import CountdownTimer from "./components/CountdownTimer"
 import { useCallback, useEffect, useState } from "react"
 import DisplayResult from "./components/DisplayResult"
+import GenerateWords from "./components/GenerateWords"
 
-const countDownSeconds = 10
+const countDownSeconds = 30
 
-// fix: the first type character was not compared
 // todo: when all words are typed, change a new one
 // todo: add a button to restart the game
 // todo: result animation
@@ -14,24 +13,50 @@ const countDownSeconds = 10
 function App() {
   const [timeLeft, setTimeLeft] = useState(countDownSeconds)
   const [isCountDownStart, setIsCountDownStart] = useState(false)
-  const [words, setWords] = useState("")
+  const [words, setWords] = useState<string[]>([])
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
-  const [resultIndexArr, setResultIndexArr] = useState<boolean[]>([])
+  const [resultIndexArr, setResultIndexArr] = useState<Array<boolean | number>>(
+    []
+  )
 
   useEffect(() => {
-    setWords(faker.word.words(10)) // initialize word list
+    const words = faker.word.words(10)
+    setWords([words]) // initialize word list
+    setResultIndexArr(resultIndexArr.concat(Array(words.length).fill(1)))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const checkCorrect = useCallback(
     (char: string) => {
-      console.log("char", char)
-      const currentChar = words[currentWordIndex]
+      const currentChar = words[words.length - 1][currentWordIndex]
+      const updatedResultArr = [...resultIndexArr]
+      console.log(currentChar, char, resultIndexArr)
       if (currentChar == char || (char == "ce" && currentChar == " ")) {
-        setResultIndexArr([...resultIndexArr, true])
+        const firstUndefinedIndex = updatedResultArr.indexOf(1)
+        if (firstUndefinedIndex !== -1) {
+          updatedResultArr[firstUndefinedIndex] = true
+          setResultIndexArr(updatedResultArr)
+        } else {
+          updatedResultArr.push(true)
+        }
       } else {
-        setResultIndexArr([...resultIndexArr, false])
+        const firstUndefinedIndex = updatedResultArr.indexOf(1)
+        if (firstUndefinedIndex !== -1) {
+          updatedResultArr[firstUndefinedIndex] = false
+          setResultIndexArr(updatedResultArr)
+        } else {
+          updatedResultArr.push(false)
+        }
       }
-      setCurrentWordIndex((prev) => prev + 1)
+      if (currentWordIndex == words[words.length - 1].length - 1) {
+        setCurrentWordIndex(0)
+        const newWords = faker.word.words(10)
+
+        setResultIndexArr(resultIndexArr.concat(Array(newWords.length).fill(1)))
+        setWords((words) => [...words, newWords])
+      } else {
+        setCurrentWordIndex((prev) => prev + 1)
+      }
     },
     [words, currentWordIndex, resultIndexArr]
   )
@@ -79,10 +104,10 @@ function App() {
   return (
     <>
       <CountdownTimer timeLeft={timeLeft} />
-      <WordComponent words={words} wordStatus={resultIndexArr} />
+      <GenerateWords words={words} wordStatus={resultIndexArr} />
       <DisplayResult
         resultArr={resultIndexArr}
-        inCountDownEnd={!isCountDownStart}
+        isCountDownEnd={!isCountDownStart}
         originalWords={words}
       />
     </>

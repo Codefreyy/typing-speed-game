@@ -1,24 +1,25 @@
 interface displayResult {
-  resultArr: boolean[]
-  inCountDownEnd: boolean
-  originalWords: string
+  resultArr: Array<boolean | number>
+  isCountDownEnd: boolean
+  originalWords: string[]
 }
 
 export default function DisplayResult({
   resultArr,
-  inCountDownEnd,
+  isCountDownEnd,
 }: displayResult) {
-  if (resultArr.length !== 0 && inCountDownEnd) {
+  if (resultArr.length !== 0 && resultArr[0] !== 1 && isCountDownEnd) {
     let correctWordCount = 0
     let errorWordCount = 0
     resultArr.forEach((i) => {
-      if (i) {
+      if (i === true) {
         correctWordCount += 1
-      } else {
+      } else if (i === false) {
         errorWordCount += 1
       }
     })
-    const correctRate = (correctWordCount / resultArr.length) * 100
+    const typedArr = [...resultArr].filter((i) => i !== 1)
+    const correctRate = (correctWordCount / typedArr.length) * 100
     return (
       <div className="grid place-items-center ">
         <span className="text-primary-500 font-bold">Results</span>
@@ -29,5 +30,7 @@ export default function DisplayResult({
         <span className="text-primary-500">Typed: {resultArr.length}</span>
       </div>
     )
+  } else {
+    return <></>
   }
 }
