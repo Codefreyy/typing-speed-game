@@ -36,7 +36,7 @@ function App() {
     [words, currentWordIndex, resultIndexArr]
   )
 
-  const PopKeyUp = useCallback(
+  const onKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (!isCountDownStart) {
         startCountDown()
@@ -48,19 +48,19 @@ function App() {
   )
 
   useEffect(() => {
-    document.addEventListener("keyup", PopKeyUp, false)
+    document.addEventListener("keydown", onKeyDown, false)
 
     return () => {
-      document.removeEventListener("keyup", PopKeyUp, false)
+      document.removeEventListener("keydown", onKeyDown, false)
     }
-  }, [isCountDownStart, PopKeyUp, currentWordIndex, resultIndexArr, words])
+  }, [isCountDownStart, onKeyDown, currentWordIndex, resultIndexArr, words])
 
   useEffect(() => {
     if (timeLeft == 0) {
       setIsCountDownStart(false)
-      document.removeEventListener("keyup", PopKeyUp)
+      document.removeEventListener("keydown", onKeyDown)
     }
-  }, [timeLeft, PopKeyUp])
+  }, [timeLeft, onKeyDown])
 
   function startCountDown() {
     setIsCountDownStart(true)
