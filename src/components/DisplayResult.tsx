@@ -1,4 +1,5 @@
 import { motion } from "framer-motion"
+import { formatPercentage } from "../utils/help"
 interface displayResult {
   resultArr: Array<boolean | number>
   isCountDownEnd: boolean
@@ -51,7 +52,7 @@ export default function DisplayResult({
           animate={animate}
           transition={{ ...duration, delay: 1.0 }}
         >
-          Accuracy: {correctRate.toFixed(1)} %
+          Accuracy: {formatPercentage(correctRate)}
         </motion.li>
         <motion.li
           initial={initial}
