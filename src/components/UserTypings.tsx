@@ -1,3 +1,5 @@
+import Caret from "./Caret"
+
 const UserTypings = ({
   userInput,
   className,
@@ -11,6 +13,7 @@ const UserTypings = ({
       {typedCharacters.map((char, index) => {
         return <Character key={`${char}_${index}`} char={char} />
       })}
+      <Caret />
     </div>
   )
 }
