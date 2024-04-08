@@ -3,12 +3,9 @@ import CountdownTimer from "./components/CountdownTimer"
 import { useCallback, useEffect, useState } from "react"
 import DisplayResult from "./components/DisplayResult"
 import GenerateWords from "./components/GenerateWords"
+import RestartButton from "./components/RestartButton"
 
-const countDownSeconds = 30
-
-// time: time does not start right away
-// todo: add a button to restart the game
-// todo: result animation
+const countDownSeconds = 10
 
 function App() {
   const [timeLeft, setTimeLeft] = useState(countDownSeconds)
@@ -102,6 +99,15 @@ function App() {
     }, 1000)
   }
 
+  const handleRestart = () => {
+    // setWords([faker.word.words(10)])
+    // setCurrentWordIndex(0)
+    // setTimeLeft(countDownSeconds)
+    // setIsCountDownStart(true)
+    // setResultIndexArr([])
+    window.location.reload()
+  }
+
   return (
     <>
       <CountdownTimer timeLeft={timeLeft} />
@@ -112,6 +118,14 @@ function App() {
         originalWords={words}
         totalTime={countDownSeconds}
       />
+      {resultIndexArr.length !== 0 &&
+        resultIndexArr[0] !== 1 &&
+        !isCountDownStart && (
+          <RestartButton
+            className="mx-auto mt-10 text-slate-500"
+            onRestart={handleRestart}
+          />
+        )}
     </>
   )
 }
