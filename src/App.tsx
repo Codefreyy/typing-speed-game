@@ -63,6 +63,7 @@ function App() {
 
   const onKeyDown = useCallback(
     (e: KeyboardEvent) => {
+      e.preventDefault()
       if (!isCountDownStart) {
         startCountDown()
       }
