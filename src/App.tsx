@@ -1,12 +1,13 @@
-import { faker } from "@faker-js/faker"
 import UserTypings from "./components/UserTypings"
 import Results from "./components/Results"
 import RestartButton from "./components/RestartButton"
 import GenerateWords from "./components/GenerateWords"
 import useEngine from "./hooks/useEngine"
+import { calculatedAccuracy } from "./utils/helpers"
 
 const App = () => {
-  const { state, words, timeLeft, typed } = useEngine()
+  const { state, words, timeLeft, typed, totalTyped, errors, restart } =
+    useEngine()
   return (
     <>
       <CountdownTimer timeLeft={timeLeft} />
@@ -21,13 +22,14 @@ const App = () => {
       </WordsContainer>
       <RestartButton
         className="mx-auto mt-10 text-slate-500"
-        onRestart={() => null}
+        onRestart={() => restart()}
       />
       <Results
+        state={state}
         className="mt-10"
-        errors={10}
-        accuracyPercentage={100}
-        total={200}
+        errors={errors}
+        accuracyPercentage={calculatedAccuracy(totalTyped, errors)}
+        total={totalTyped}
       />
     </>
   )
