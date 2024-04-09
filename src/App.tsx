@@ -6,10 +6,10 @@ import GenerateWords from "./components/GenerateWords"
 import useEngine from "./hooks/useEngine"
 
 const App = () => {
-  const { state, words } = useEngine()
+  const { state, words, timeLeft } = useEngine()
   return (
     <>
-      <CountdownTimer timeLeft={30} />
+      <CountdownTimer timeLeft={timeLeft} />
       <WordsContainer>
         {/* <GenerateWords/> */}
         <GenerateWords words={words} />
