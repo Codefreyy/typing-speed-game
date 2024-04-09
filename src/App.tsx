@@ -1,18 +1,18 @@
 import { faker } from "@faker-js/faker"
 import UserTypings from "./components/UserTypings"
-import GenerateWord from "./components/GenerateWord"
 import Results from "./components/Results"
 import RestartButton from "./components/RestartButton"
-
-const words = faker.word.words(10)
+import GenerateWords from "./components/GenerateWords"
+import useEngine from "./hooks/useEngine"
 
 const App = () => {
+  const { state, words } = useEngine()
   return (
     <>
       <CountdownTimer timeLeft={30} />
       <WordsContainer>
         {/* <GenerateWords/> */}
-        <GenerateWord words={words} />
+        <GenerateWords words={words} />
         <UserTypings userInput={"test"} className="absolute inset-0" />
       </WordsContainer>
       <RestartButton
