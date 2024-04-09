@@ -6,14 +6,18 @@ import GenerateWords from "./components/GenerateWords"
 import useEngine from "./hooks/useEngine"
 
 const App = () => {
-  const { state, words, timeLeft } = useEngine()
+  const { state, words, timeLeft, typed } = useEngine()
   return (
     <>
       <CountdownTimer timeLeft={timeLeft} />
       <WordsContainer>
         {/* <GenerateWords/> */}
         <GenerateWords words={words} />
-        <UserTypings userInput={"test"} className="absolute inset-0" />
+        <UserTypings
+          userInput={typed}
+          className="absolute inset-0"
+          words={words}
+        />
       </WordsContainer>
       <RestartButton
         className="mx-auto mt-10 text-slate-500"
