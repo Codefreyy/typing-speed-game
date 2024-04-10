@@ -9,22 +9,20 @@ export default function useDarkMode() {
 
         const handleChange = () => {
             setIsDark(mediaQuery.matches)
-            handleToggleDarkModeClass(mediaQuery.matches)
         };
-
-        const handleToggleDarkModeClass = (matches) => {
-            if (matches) {
-                document.documentElement.classList.add("dark");
-            } else {
-                document.documentElement.classList.remove("dark");
-            }
-        };
-
-        handleToggleDarkModeClass(isDark); // Initial setup
 
         mediaQuery.addEventListener('change', handleChange);
         return () => mediaQuery.removeEventListener('change', handleChange);
     }, [setIsDark, isDark])
+
+
+    useEffect(() => {
+        if (isDark) {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
+    }, [isDark]);
 
     return { isDark, setIsDark }
 }
