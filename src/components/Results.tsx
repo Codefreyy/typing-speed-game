@@ -23,7 +23,7 @@ const Results = ({
     <motion.ul
       initial={initial}
       animate={animate}
-      className={`flex flex-col items-center text-primary-400 space-y-3 ${className}`}
+      className={`flex flex-col items-center dark:text-primary-400 text-green-500 space-y-3 ${className}`}
     >
       <motion.li
         initial={initial}

@@ -4,12 +4,28 @@ import RestartButton from "./components/RestartButton"
 import GenerateWords from "./components/GenerateWords"
 import useEngine from "./hooks/useEngine"
 import { calculatedAccuracy } from "./utils/helpers"
+import useDarkMode from "./hooks/useDarkMode"
+import { useEffect } from "react"
+import DarkModeToggle from "./components/DarkModeToggle"
 
 const App = () => {
   const { state, words, timeLeft, typed, totalTyped, errors, restart } =
     useEngine()
+
+  const { isDark, setIsDark } = useDarkMode()
+
+  useEffect(() => {
+    if (isDark) {
+      console.log("isDark", isDark)
+      document.documentElement.classList.add("dark")
+    } else {
+      document.documentElement.classList.remove("dark")
+    }
+  }, [isDark])
+
   return (
     <>
+      <DarkModeToggle isDark={isDark} setIsDark={setIsDark} />
       <CountdownTimer timeLeft={timeLeft} />
       <WordsContainer>
         {/* <GenerateWords/> */}
@@ -44,7 +60,11 @@ const WordsContainer = ({ children }: { children: React.ReactNode }) => {
 }
 
 const CountdownTimer = ({ timeLeft }: { timeLeft: number }) => {
-  return <h2 className="text-primary-400 font-medium">Time: {timeLeft}</h2>
+  return (
+    <h2 className="dark:text-primary-400 text-green-500 font-medium">
+      Time: {timeLeft}
+    </h2>
+  )
 }
 
 export default App

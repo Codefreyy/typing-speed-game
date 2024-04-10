@@ -5,7 +5,7 @@ import useTypings from "./useTypings"
 import { countErrors } from "../utils/helpers"
 
 const NUMBER_OF_WORDS = 12
-const COUNTDOWN_SECONDS = 10
+const COUNTDOWN_SECONDS = 30
 
 export type State = 'start' | 'run' | 'finish'
 
