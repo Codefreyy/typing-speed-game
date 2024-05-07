@@ -15,7 +15,6 @@ const App = () => {
       <DarkModeToggle />
       <CountdownTimer timeLeft={timeLeft} />
       <WordsContainer>
-        {/* <GenerateWords/> */}
         <GenerateWords words={words} />
         <UserTypings
           userInput={typed}

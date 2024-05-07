@@ -2,13 +2,21 @@ import { useRef } from "react"
 import { MdDarkMode } from "react-icons/md"
 import { MdOutlineLightMode } from "react-icons/md"
 import useDarkMode from "../hooks/useDarkMode"
+import { useSound } from "use-sound"
 
 function DarkModeToggle() {
   const togglerRef = useRef<HTMLButtonElement>(null)
   const { isDark, setIsDark } = useDarkMode()
+  const [playLight] = useSound("/light-on.mp3", { volume: 0.5 })
+  const [playDark] = useSound("/light-off.mp3", { volume: 0.5 })
 
   const handleToggleDarkMode = () => {
     togglerRef.current?.blur()
+    if (isDark) {
+      playLight()
+    } else {
+      playDark()
+    }
     setIsDark(!isDark)
   }
   return (

@@ -13,7 +13,7 @@ export default function useDarkMode() {
 
         mediaQuery.addEventListener('change', handleChange);
         return () => mediaQuery.removeEventListener('change', handleChange);
-    }, [setIsDark, isDark])
+    }, [])
 
 
     useEffect(() => {

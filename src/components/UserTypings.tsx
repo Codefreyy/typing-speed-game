@@ -1,4 +1,6 @@
+import { useEffect } from "react"
 import Caret from "./Caret"
+import useSound from "use-sound"
 
 const UserTypings = ({
   userInput,
@@ -35,7 +37,15 @@ const Character = ({
 }) => {
   const isCorrect = actual === expected
   const isWhiteSpace = expected === " "
-
+  const [playStroke] = useSound("/keyboard_stroke.wav", { volume: 0.5 })
+  const [playError] = useSound("/typing-error.wav", { volume: 0.5 })
+  useEffect(() => {
+    if (isCorrect) {
+      playStroke()
+    } else {
+      playError()
+    }
+  }, [playStroke, playError, isCorrect])
   return (
     <span
       className={cn({
