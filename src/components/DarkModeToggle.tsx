@@ -2,7 +2,7 @@ import { useRef } from "react"
 import { MdDarkMode } from "react-icons/md"
 import { MdOutlineLightMode } from "react-icons/md"
 import useDarkMode from "../hooks/useDarkMode"
-import { useSound } from "use-sound"
+import useSound from "use-sound"
 
 function DarkModeToggle() {
   const togglerRef = useRef<HTMLButtonElement>(null)
