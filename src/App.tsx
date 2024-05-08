@@ -75,7 +75,7 @@ const CountdownTimer = ({
   const handleTimeChose = (time: number) => {
     setCountdownTime(time)
   }
-  if (state !== "run") {
+  if (state == "start") {
     return <ChooseTime onTimeChose={handleTimeChose} />
   } else {
     return (

@@ -5,7 +5,7 @@ const useCountdownTimer = (seconds: number) => {
 
 
     useEffect(() => {
-        setTimeLeft(seconds - 1); // when the user start typing, the countdown starts immdeiately, so when they see the time, it's already 1 second less
+        setTimeLeft(seconds);
     }, [seconds]);
 
     const intervalRef = useRef<number | null>(null)
