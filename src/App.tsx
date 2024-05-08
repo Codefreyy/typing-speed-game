@@ -2,18 +2,36 @@ import UserTypings from "./components/UserTypings"
 import Results from "./components/Results"
 import RestartButton from "./components/RestartButton"
 import GenerateWords from "./components/GenerateWords"
-import useEngine from "./hooks/useEngine"
+import useEngine, { State } from "./hooks/useEngine"
 import { calculatedAccuracy } from "./utils/helpers"
 import DarkModeToggle from "./components/DarkModeToggle"
+import ChooseTime from "./components/ChooseTime"
+import { Toaster } from "react-hot-toast"
 
 const App = () => {
-  const { state, words, timeLeft, typed, totalTyped, errors, restart } =
-    useEngine()
+  const {
+    state,
+    words,
+    timeLeft,
+    typed,
+    totalTyped,
+    errors,
+    restart,
+    setCountdownSeconds,
+  } = useEngine()
 
   return (
     <>
       <DarkModeToggle />
-      <CountdownTimer timeLeft={timeLeft} />
+      <Toaster />
+      <CountdownTimer
+        timeLeft={timeLeft}
+        state={state}
+        setCountdownTime={(time) => {
+          setCountdownSeconds(time)
+        }}
+      />
+
       <WordsContainer>
         <GenerateWords words={words} />
         <UserTypings
@@ -45,12 +63,27 @@ const WordsContainer = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-const CountdownTimer = ({ timeLeft }: { timeLeft: number }) => {
-  return (
-    <h2 className="dark:text-primary-400 text-green-600 font-medium">
-      Time: {timeLeft}
-    </h2>
-  )
+const CountdownTimer = ({
+  timeLeft,
+  state,
+  setCountdownTime,
+}: {
+  timeLeft: number
+  state: State
+  setCountdownTime: (time: number) => void
+}) => {
+  const handleTimeChose = (time: number) => {
+    setCountdownTime(time)
+  }
+  if (state !== "run") {
+    return <ChooseTime onTimeChose={handleTimeChose} />
+  } else {
+    return (
+      <h2 className="dark:text-primary-400 text-green-600 font-medium">
+        Time: {timeLeft}
+      </h2>
+    )
+  }
 }
 
 export default App

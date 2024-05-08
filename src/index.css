@@ -7,3 +7,11 @@
     @apply min-h-screen dark:bg-slate-800 bg-slate-50 grid place-items-center font-mono tracking-wider px-4;
   }
 }
+
+.tooltip {
+  @apply invisible absolute;
+}
+
+.has-tooltip:hover .tooltip {
+  @apply visible z-50;
+}

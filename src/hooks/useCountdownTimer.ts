@@ -2,6 +2,12 @@ import { useCallback, useEffect, useRef, useState } from "react"
 
 const useCountdownTimer = (seconds: number) => {
     const [timeLeft, setTimeLeft] = useState(seconds)
+
+
+    useEffect(() => {
+        setTimeLeft(seconds); // reset the timeLeft when the initialSeconds change
+    }, [seconds]);
+
     const intervalRef = useRef<number | null>(null)
 
     const startCountdown = useCallback(() => {

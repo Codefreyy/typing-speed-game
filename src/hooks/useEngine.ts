@@ -5,15 +5,15 @@ import useTypings from "./useTypings"
 import { countErrors } from "../utils/helpers"
 
 const NUMBER_OF_WORDS = 12
-const COUNTDOWN_SECONDS = 30
 
 export type State = 'start' | 'run' | 'finish'
 
 const useEngine = () => {
     const [state, setState] = useState<State>("start")
+    const [countdownSeconds, setCountdownSeconds] = useState(0)
     const { words, updateWords } = useWords(NUMBER_OF_WORDS)
-    const { timeLeft, startCountdown, resetCountdown } = useCountdownTimer(COUNTDOWN_SECONDS)
-    const { typed, cursor, clearTyped, resetTotalTyped, totalTyped } = useTypings(state !== 'finish')
+    const { timeLeft, startCountdown, resetCountdown } = useCountdownTimer(countdownSeconds)
+    const { typed, cursor, clearTyped, resetTotalTyped, totalTyped } = useTypings(state !== 'finish', countdownSeconds)
 
 
     const [errors, setErrors] = useState(0)
@@ -37,11 +37,12 @@ const useEngine = () => {
 
     // as soon as the user types the first character, start the countdown
     useEffect(() => {
-        if (isStarting) {
+        if (isStarting && countdownSeconds > 0) {
+            console.log('可以开始了！')
             setState('run')
             startCountdown()
         }
-    }, [isStarting, startCountdown])
+    }, [isStarting, startCountdown, countdownSeconds])
 
 
     // when the countdown reaches 0, stop the game
@@ -49,6 +50,7 @@ const useEngine = () => {
         if (timeLeft === 0 && state == 'run') {
             setState('finish')
             sumErrors()
+            setCountdownSeconds(0)
         }
     }, [timeLeft, state, sumErrors])
 
@@ -62,7 +64,7 @@ const useEngine = () => {
     }, [clearTyped, updateWords, sumErrors, areWordsFinished])
 
 
-    return { state, words, timeLeft, typed, cursor, clearTyped, resetTotalTyped, totalTyped, errors, restart }
+    return { state, words, timeLeft, typed, cursor, clearTyped, resetTotalTyped, totalTyped, errors, restart, setCountdownSeconds }
 }
 
 export default useEngine
