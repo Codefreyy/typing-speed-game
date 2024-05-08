@@ -38,7 +38,6 @@ const useEngine = () => {
     // as soon as the user types the first character, start the countdown
     useEffect(() => {
         if (isStarting && countdownSeconds > 0) {
-            console.log('可以开始了！')
             setState('run')
             startCountdown()
         }
