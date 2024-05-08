@@ -18,3 +18,9 @@ export const calculatedAccuracy = (total: number, errors: number) => {
   }
   return 0
 }
+
+export const calculateWPM = (correctTyped: number, timeSeconds: number) => {
+  const words = correctTyped / 5;
+  const minutes = timeSeconds / 60;
+  return words / minutes + ' WPM';
+};

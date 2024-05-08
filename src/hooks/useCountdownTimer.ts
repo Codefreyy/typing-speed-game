@@ -13,7 +13,6 @@ const useCountdownTimer = (seconds: number) => {
     const startCountdown = useCallback(() => {
         intervalRef.current = setInterval(() => {
             setTimeLeft(timeLeft => {
-                console.log('timeLeft:', timeLeft)
                 return timeLeft - 1
             })
 

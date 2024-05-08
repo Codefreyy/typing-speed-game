@@ -7,6 +7,7 @@ import { calculatedAccuracy } from "./utils/helpers"
 import DarkModeToggle from "./components/DarkModeToggle"
 import ChooseTime from "./components/ChooseTime"
 import { Toaster } from "react-hot-toast"
+import { useState } from "react"
 
 const App = () => {
   const {
@@ -20,11 +21,14 @@ const App = () => {
     setCountdownSeconds,
   } = useEngine()
 
+  const [selectedTime, setSelectedTime] = useState(0)
+
   return (
     <>
       <DarkModeToggle />
       <Toaster />
       <CountdownTimer
+        setSelectedTime={setSelectedTime}
         timeLeft={timeLeft}
         state={state}
         setCountdownTime={(time) => {
@@ -48,6 +52,7 @@ const App = () => {
         state={state}
         className="mt-10"
         errors={errors}
+        totalTime={selectedTime}
         accuracyPercentage={calculatedAccuracy(totalTyped, errors)}
         total={totalTyped}
       />
@@ -67,13 +72,16 @@ const CountdownTimer = ({
   timeLeft,
   state,
   setCountdownTime,
+  setSelectedTime,
 }: {
   timeLeft: number
   state: State
   setCountdownTime: (time: number) => void
+  setSelectedTime: (time: number) => void
 }) => {
   const handleTimeChose = (time: number) => {
     setCountdownTime(time)
+    setSelectedTime(time)
   }
   if (state == "start") {
     return <ChooseTime onTimeChose={handleTimeChose} />
