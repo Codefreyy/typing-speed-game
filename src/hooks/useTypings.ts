@@ -7,13 +7,23 @@ const isKeyboardCodeAllowed = (code: string) => {
     )
 }
 
-const useTypings = (enabled: boolean, countdownSeconds: number) => {
+const useTypings = (isFinish: boolean, countdownSeconds: number) => {
     const [cursor, setCursor] = useState(0)
     const [typed, setTyped] = useState<string>("")
     const totalTyped = useRef(0)
 
     const keydownHandler = useCallback(({ key, code }: KeyboardEvent) => {
-        if (!enabled || countdownSeconds <= 0) {
+        if (isFinish) {
+            toast('Click restart to play again!', {
+                ariaProps: {
+                    role: 'status',
+                    'aria-live': 'polite',
+                },
+                duration: 1000
+            })
+            return
+        }
+        if (countdownSeconds <= 0) {
             toast('Please choose a time first :)', {
                 ariaProps: {
                     role: 'status',
@@ -39,7 +49,7 @@ const useTypings = (enabled: boolean, countdownSeconds: number) => {
                 setCursor(cursor + 1)
                 totalTyped.current += 1
         }
-    }, [cursor, enabled, countdownSeconds])
+    }, [cursor, isFinish, countdownSeconds])
 
 
     const clearTyped = useCallback(() => {

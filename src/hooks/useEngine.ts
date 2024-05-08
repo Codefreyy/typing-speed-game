@@ -13,7 +13,7 @@ const useEngine = () => {
     const [countdownSeconds, setCountdownSeconds] = useState(0)
     const { words, updateWords } = useWords(NUMBER_OF_WORDS)
     const { timeLeft, startCountdown, resetCountdown } = useCountdownTimer(countdownSeconds)
-    const { typed, cursor, clearTyped, resetTotalTyped, totalTyped } = useTypings(state !== 'finish', countdownSeconds)
+    const { typed, cursor, clearTyped, resetTotalTyped, totalTyped } = useTypings(state == 'finish', countdownSeconds)
 
 
     const [errors, setErrors] = useState(0)
